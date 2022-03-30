@@ -14,15 +14,16 @@ export class MarkerService {
   }
 
   makeMapPopup(data: any): any{ 
-    this.placeData = data;
+    /* this.placeData = data;
     console.log(this.placeData);
-    return this.placeData;
+    return this.placeData; */
 
-    // return `` +
-    // `<div>Place: ${ data.name.fi }</div>` +
-    // `<div>Address: ${ data.location.address.street_address } ${ data.location.address.postal_code } ${ data.location.address.locality } </div>` +
-    // `<div>Opening Hours: ${ data.opening_hours.hours[0].weekday_id } ${ data.opening_hours.hours[0].opens } ${ data.opening_hours.hours[0].closes } ${ data.opening_hours.hours[0].open24h }</div>`
-  }
+
+   return /* `` +
+    `<div>Place: ${ data.name.fi }</div>` +
+    `<div>Address: ${ data.location.address.street_address } ${ data.location.address.postal_code } ${ data.location.address.locality } </div>` +
+    `<div>Opening Hours: ${ data.opening_hours.hours[0].weekday_id } ${ data.opening_hours.hours[0].opens } ${ data.opening_hours.hours[0].closes } ${ data.opening_hours.hours[0].open24h }</div>` */
+  } 
 
 
   makePlaceMarkers(map: L.Map): void {
