@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Modal } from './modal';
 import {TranslateService} from '@ngx-translate/core';
 import { PopupComponent } from '../popup/popup.component';
+import { HttpClient } from '@angular/common/http';
 
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -31,17 +32,21 @@ export class MapComponent implements AfterViewInit {
   private map: L.Map;
   closeResult: string = '';
 
+  places: string = 'assets/data/places.json';
+  place: any;
+
   modal: Modal[] = [];
-  /* modalInfo : any;
-  modal: Modal[] = [];
-   */
+   modalInfo : any;
+  // modal: Modal[] = [];
+   
 
   constructor(
     private markerService: MarkerService,
     private modalService: NgbModal, 
     private resolver: ComponentFactoryResolver,
     private appRef: ApplicationRef,
-    private injector: Injector) { }
+    private injector: Injector,
+    private http: HttpClient) { }
   
  // Initialize the map to display Helsinki
   private initMap(): void {
@@ -57,56 +62,100 @@ export class MapComponent implements AfterViewInit {
     });
 
     tiles.addTo(this.map);
+    console.log("initMap");
+
   }
+
+  makePlaceMarkers(map: L.Map): void {
+    console.log("makePlaceMarkers");
+
+    this.http.get(this.places).subscribe((res: any) => {
+      for (const c of res.data) {
+        const lon = c.location.lon;
+        const lat = c.location.lat;
+        const marker = L.marker([lat, lon]);
+      
+        marker.bindPopup(this.makeMapPopup(c));
+        // console.log("makePalceMarkers c" + c);
+        marker.addTo(map);
+      }
+    });
+  }
+
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makePlaceMarkers(this.map);
+    console.log("ngAfterViewInit");
+
+  }
+
+
+  makeMapPopup(data: any): any{
+    // console.log("makeMapPopup data" + data);
+    this.makeMapPopup(data).subscribe((res: any) => {
+      this.modalInfo = res;
+      // console.log("makeMapPopup res" + res);
+    })
   }
 
   ngOnInit(){
-   
+    // console.log("ngOnInit modalinfo" + this.modalInfo);
+    this.place = this.modalInfo;
+    this.makeMapPopup(this.place);
+    // console.log("ngOnInit place" + this.place);
+
   }
+
+  
+  
+  // makeMapPopup(data: any): any{
+  //   return  `` +
+  //   `<div>Place: ${ data.name.fi }</div>` +
+  //   `<div>Address: ${ data.location.address.street_address } ${ data.location.address.postal_code } ${ data.location.address.locality } </div>` +
+  //   `<div>Opening Hours: ${ data.opening_hours.hours[1].weekday_id } ${ data.opening_hours.hours[0].opens } ${ data.opening_hours.hours[0].closes } ${ data.opening_hours.hours[0].open24h }</div>`;
+  // }
+
+
+  
+
 
   /*Builds the referenced component so it can be injected into the 
   * leaflet map as popup.
   * Original code from:  https://github.com/darkguy2008/leaflet-angular4-issue/blob/master/src/app.ts
   */
- private compilePopup(component: Type<unknown>, onAttach: { (c: any): void; (arg0: any): void; }): any {
-   const compFactory: any = this.resolver.resolveComponentFactory(component);
-   let compRef: any = compFactory.create(this.injector);
+//  private compilePopup(component: Type<unknown>, onAttach: { (c: any): void; (arg0: any): void; }): any {
+//    const compFactory: any = this.resolver.resolveComponentFactory(component);
+//    let compRef: any = compFactory.create(this.injector);
 
-   // onAttach allows you to assign 
-   if (onAttach)
-     onAttach(compRef);
+//    // onAttach allows you to assign 
+//    if (onAttach)
+//      onAttach(compRef);
 
-   this.appRef.attachView(compRef.hostView);
-   compRef.onDestroy(() => this.appRef.detachView(compRef.hostView));
+//    this.appRef.attachView(compRef.hostView);
+//    compRef.onDestroy(() => this.appRef.detachView(compRef.hostView));
    
-   let div = document.createElement('div');
-   div.appendChild(compRef.location.nativeElement);
-   return div;
- }
+//    let div = document.createElement('div');
+//    div.appendChild(compRef.location.nativeElement);
+//    return div;
+//  }
 
- centerMap(lat: number, lng: number): void {
-  // Move the center of the map to the new location
-  this.map.panTo([lat, lng]);
-  // Build the component for showing in the marker popup
-  let markerPopup: any = this.compilePopup(PopupComponent, 
-    (c) => {c.instance.customText = 'Custom Data Injection'});
-  // Generate a circle marker for this location
-  let currentLocation: L.CircleMarker = L.circleMarker([lat, lng], {
-    radius: 5
-  })
-  // Add a binding for the popup to show a custom component
-  // instead of the standard leaflet popup
-  .bindPopup(markerPopup);
-  currentLocation.addTo(this.map);
-  // Wait a short period before zooming to a designated level
-  setTimeout(() => {this.map.setZoom(8);}, 750);
-}
+
+
+
+//  centerMap(lat: number, lng: number): void {
+//   this.map.panTo([lat, lng]);
+//   let markerPopup: any = this.compilePopup(PopupComponent, 
+//     (c) => {c.instance.customText = 'Custom Data Injection'});
+//   let currentLocation: L.CircleMarker = L.circleMarker([lat, lng], {
+//     radius: 5
+//   })
+//   .bindPopup(markerPopup);
+//   currentLocation.addTo(this.map);
+//   setTimeout(() => {this.map.setZoom(8);}, 750);
+// }
  
-}
+
  /* centerMap(lat: number, lng: number): void {
   
   this.map.panTo([lat, lng]);
@@ -146,5 +195,5 @@ export class MapComponent implements AfterViewInit {
 
     
 
-
-  } */
+*/
+  } 
