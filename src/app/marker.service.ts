@@ -17,9 +17,12 @@ export class MarkerService {
     /* this.placeData = data;
     console.log(this.placeData);
     return this.placeData; */
+    
 
 
-   return /* `` +
+   return 
+   
+   /* `` +
     `<div>Place: ${ data.name.fi }</div>` +
     `<div>Address: ${ data.location.address.street_address } ${ data.location.address.postal_code } ${ data.location.address.locality } </div>` +
     `<div>Opening Hours: ${ data.opening_hours.hours[0].weekday_id } ${ data.opening_hours.hours[0].opens } ${ data.opening_hours.hours[0].closes } ${ data.opening_hours.hours[0].open24h }</div>` */
