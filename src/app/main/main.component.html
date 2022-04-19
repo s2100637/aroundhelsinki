@@ -15,9 +15,8 @@
         top: 285px;
       "
     >
-    <!-- <div (change)="sort(placeDistance)"></div> -->
       <div *ngFor="let place of places">
-        <div *ngFor="let data of place.data | mainFilter: getDistance()">
+        <div *ngFor="let data of place.data">
           <a
             href=""
             class="list-group-item list-group-item-action"
@@ -32,7 +31,7 @@
               </h5>
               <small id="distance" *ngIf="showDistance">{{
                 calculateDistance(data.location)
-              }}km</small>            
+              }}</small>            
             </div>
             <p class="mb-1 ptext">
               {{ data.location.address.street_address }},

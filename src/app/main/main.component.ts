@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Places } from './places';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { ReturnStatement } from '@angular/compiler';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -96,12 +97,8 @@ export class MainComponent implements AfterViewInit, OnInit {
     var b = 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     this.placeDistance = b.toFixed(2);
     return this.placeDistance;
-
   }
 
-  getDistance(){
-    return this.placeDistance;
-  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -119,7 +116,4 @@ export class MainComponent implements AfterViewInit, OnInit {
     });
   }
 
-  sort(event:any){
-    this.placeDistance = event.target.value;
-  }
 }
