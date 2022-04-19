@@ -46,6 +46,7 @@
     "@types/express-rate-limit": "^6.0.0",
     "@types/jasmine": "~3.10.0",
     "@types/leaflet": "^1.7.9",
+    "@types/leaflet-geosearch": "^3.0.0",
     "@types/node": "^12.11.1",
     "@types/rate-limit-redis": "^1.7.4",
     "jasmine-core": "~4.0.0",

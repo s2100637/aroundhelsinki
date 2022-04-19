@@ -120,5 +120,4 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.getAllPlaces();
   }
 
-
 }
