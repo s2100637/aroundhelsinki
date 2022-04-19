@@ -39,7 +39,7 @@ export class MainComponent implements AfterViewInit, OnInit {
     y: 60.16952,
     x: 24.93545
   };
-  showDistance = false;
+  showDistance = true;
 
   constructor(
     private markerService: MarkerService,
@@ -99,6 +99,10 @@ export class MainComponent implements AfterViewInit, OnInit {
 
   }
 
+  getDistance(){
+    return this.placeDistance;
+  }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.saveReferenceLocation();
@@ -113,5 +117,9 @@ export class MainComponent implements AfterViewInit, OnInit {
     this.markerService.getAllPlaces().subscribe((res: Places) => {
       this.places.push(res);
     });
+  }
+
+  sort(event:any){
+    this.placeDistance = event.target.value;
   }
 }

@@ -15,8 +15,9 @@
         top: 285px;
       "
     >
+    <!-- <div (change)="sort(placeDistance)"></div> -->
       <div *ngFor="let place of places">
-        <div *ngFor="let data of place.data">
+        <div *ngFor="let data of place.data | mainFilter: getDistance()">
           <a
             href=""
             class="list-group-item list-group-item-action"
