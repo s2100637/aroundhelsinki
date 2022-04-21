@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,6 +14,7 @@ export class PopupComponent implements OnInit {
   @Input() openingHours: String;
   @Input() locality: String;
   @Input() placeUrl: String;
+  @Input() ownPage: String;
 
   faLocationCrosshairs = faLocationCrosshairs;
    
