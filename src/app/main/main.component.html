@@ -30,7 +30,7 @@
                 >
               </h5>
               <small id="distance" *ngIf="showDistance">{{
-                calculateDistance(data.location)
+                calculateDistance(data.location ) | mainPipe: placeDistance
               }}km</small>            
             </div>
             <p class="mb-1 ptext">

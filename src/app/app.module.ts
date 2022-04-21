@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { PlaceDetailComponent } from './place-detail/place-detail.component';
 import { PopupComponent } from './popup/popup.component';
 import { OrderModule } from 'ngx-order-pipe';
+import { MainPipe } from './main/main.pipe';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -26,7 +27,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavigationComponent,
     FooterComponent,
     PlaceDetailComponent,
-    PopupComponent
+    PopupComponent,
+    MainPipe
   ],
   providers: [],
   imports: [

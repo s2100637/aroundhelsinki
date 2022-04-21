@@ -7,6 +7,7 @@ import { Places } from './places';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { OrderPipe } from 'ngx-order-pipe';
+import { MainPipe } from './main.pipe';
 
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -41,11 +42,11 @@ export class MainComponent implements AfterViewInit, OnInit {
     y: 60.16952,
     x: 24.93545
   };
-  showDistance = true;
+  showDistance = false;
   sortedCollection: any[];
   reverse: boolean = false;
   caseInsensitive: boolean = false;
-  order: string = 'data.name';
+  // content = document.getElementById("distance")?.textContent;
 
   
   constructor(
@@ -53,7 +54,7 @@ export class MainComponent implements AfterViewInit, OnInit {
     public translate: TranslateService, public orderPipe: OrderPipe
   ) {
 
-    this.sortedCollection = orderPipe.transform(this.places, document.getElementById("distance")?.textContent);
+    // this.sortedCollection = orderPipe.transform(this.places, this.order);
 
   }
 
@@ -137,11 +138,11 @@ export class MainComponent implements AfterViewInit, OnInit {
 
   
 
-  setOrder(value: string) {
-    if (this.order === value) {
-      this.reverse = !this.reverse;
-    }
+  // setOrder(value: string) {
+  //   if (this.order === value) {
+  //     this.reverse = !this.reverse;
+  //   }
    
-    this.order = value;
-  }
+  //   this.order = value;
+  // }
 }
