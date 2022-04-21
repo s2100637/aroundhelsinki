@@ -45,10 +45,11 @@ export class MainComponent implements AfterViewInit, OnInit {
     x: 24.93545
   };
   showDistance = false;
-  sortedCollection: any[];
-  reverse: boolean = false;
-  caseInsensitive: boolean = false;
-  // content = document.getElementById("distance")?.textContent;
+  one: 0.00;
+  userY: any;
+  userX: any;
+  placeX: any;
+  placeY: any;
 
   
   constructor(
@@ -93,23 +94,29 @@ export class MainComponent implements AfterViewInit, OnInit {
   }
 
   calculateDistance(placeLocation : any){
-    const userY = this.referenceLocation.y;
-    const userX = this.referenceLocation.x;
-    let placeX = placeLocation.lon;
-    let placeY = placeLocation.lat;
+    this.userY = this.referenceLocation.y;
+    this.userX = this.referenceLocation.x;
+    this.placeX = placeLocation.lon;
+    this.placeY = placeLocation.lat;
 
+    return this.distance(this.userY, this.userX, this.placeX, this.placeY);
+  }
+
+  distance(userY: any, userX: any, placeX: any, placeY: any): any{
     let degrees = Math.PI / 180;
     let dLat = (parseFloat(placeY) - userY) * degrees;
     var dLon = (parseFloat(placeX) - userX) * degrees;
     var a =
       Math.pow(Math.sin(dLat / 2.0), 2) +
-      Math.cos(userY * degrees) *
-        Math.cos(userX * degrees) *
+      Math.cos(this.userY * degrees) *
+        Math.cos(this.userX * degrees) *
         Math.pow(Math.sin(dLon / 2.0), 2);
     var b = 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     this.placeDistance = b.toFixed(2);
     return this.placeDistance;
+
   }
+
 
   makeMapPopup(data: any): any{
     let markerPopup: any = this.compilePopup(PopupComponent, (c: any) => {
@@ -167,4 +174,8 @@ export class MainComponent implements AfterViewInit, OnInit {
       this.places.push(res);
     });
   }
+}
+
+function distance(y: any, x: any, arg2: any, arg3: any) {
+  throw new Error('Function not implemented.');
 }
