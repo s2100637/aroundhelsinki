@@ -48,7 +48,7 @@ export class MarkerService {
 
   getExternalAll():Observable<any> {
 
-    console.log (this.http.get(`${this.externalApi}`));
+    // console.log (this.http.get(`${this.externalApi}`));
     return this.http.get(`${this.externalApi}`);
 
   }
@@ -59,7 +59,7 @@ export class MarkerService {
 
   public getOnePlace(id:any):Observable<any>{
 
-    console.log (this.http.get(`${this.externalApi}/place/${id}`));
+    // console.log (this.http.get(`${this.externalApi}/place/${id}`));
     return this.http.get(this.externalApi + "/place/" +  id);
     // return this.http.get(`${this.externalApi}/place/${id}`);
   }

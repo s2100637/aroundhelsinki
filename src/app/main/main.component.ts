@@ -6,6 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Places } from './places';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { OrderPipe } from 'ngx-order-pipe';
+
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -39,12 +41,21 @@ export class MainComponent implements AfterViewInit, OnInit {
     y: 60.16952,
     x: 24.93545
   };
-  showDistance = false;
+  showDistance = true;
+  sortedCollection: any[];
+  reverse: boolean = false;
+  caseInsensitive: boolean = false;
+  order: string = 'data.name';
 
+  
   constructor(
     private markerService: MarkerService,
-    public translate: TranslateService
-  ) {}
+    public translate: TranslateService, public orderPipe: OrderPipe
+  ) {
+
+    this.sortedCollection = orderPipe.transform(this.places, document.getElementById("distance")?.textContent);
+
+  }
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -118,8 +129,19 @@ export class MainComponent implements AfterViewInit, OnInit {
 
   getExternalAll(): void {
     this.markerService.getExternalAll().subscribe((res: Places ) => {
-      console.log(res);
+      // console.log(res);
+      // console.log("distance " + document.getElementById("distance")?.textContent);
       this.places.push(res);
     });
+  }
+
+  
+
+  setOrder(value: string) {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    }
+   
+    this.order = value;
   }
 }
