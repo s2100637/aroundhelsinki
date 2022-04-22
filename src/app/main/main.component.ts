@@ -7,8 +7,6 @@ import { Places } from '../interfaces/places';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { OrderPipe } from 'ngx-order-pipe';
-import { MainPipe } from './main.pipe';
-
 import { Injector, ApplicationRef, ComponentFactoryResolver, Type } from '@angular/core';
 import { PopupComponent } from '../popup/popup.component';
 
@@ -116,6 +114,19 @@ export class MainComponent implements AfterViewInit, OnInit {
     return this.placeDistance;
   }
 
+  hei(){
+    this.apiService.httpPlaceMarker().subscribe((res: any) => {
+      let lon: any;
+      let lat: any;
+      for (const c of res.data) {
+        lon = c.location.lon;
+        lat = c.location.lat;
+        let distance = this.distance(this.referenceLocation.y, this.referenceLocation.x, lat, lon);
+        c.distance = distance;
+      }});
+
+      console.log(this.places);
+  }
 
   makeMapPopup(data: any): any{
     let markerPopup: any = this.compilePopup(PopupComponent, (c: any) => {
