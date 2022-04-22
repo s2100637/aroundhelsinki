@@ -3,7 +3,7 @@ import * as L from 'leaflet';
 import { LeafletEvent } from 'leaflet';
 import { ApiService } from '../services/api.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Places } from '../interfaces/places';
+import { Datum, Places } from '../interfaces/places';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { OrderPipe } from 'ngx-order-pipe';
@@ -42,13 +42,14 @@ export class MainComponent implements AfterViewInit, OnInit {
     y: 60.16952,
     x: 24.93545
   };
-  showDistance = false;
+  showDistance = true;
   one: 0.00;
   userY: any;
   userX: any;
   placeX: any;
   placeY: any;
-
+  placeid: any;
+  datum: Datum[] = [];
   
   constructor(
     private apiService: ApiService,
@@ -82,6 +83,7 @@ export class MainComponent implements AfterViewInit, OnInit {
     );
     this.saveReferenceLocation();
     tiles.addTo(this.map);
+   
   }
 
   saveReferenceLocation(): void {
@@ -96,8 +98,9 @@ export class MainComponent implements AfterViewInit, OnInit {
     this.userX = this.referenceLocation.x;
     this.placeX = placeLocation.lon;
     this.placeY = placeLocation.lat;
-
-    return this.distance(this.userY, this.userX, this.placeX, this.placeY);
+    let distance2 = this.distance(this.userY, this.userX, this.placeX, this.placeY);
+    
+    return distance2;
   }
 
   distance(userY: any, userX: any, placeX: any, placeY: any): any{
@@ -112,20 +115,6 @@ export class MainComponent implements AfterViewInit, OnInit {
     var b = 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     this.placeDistance = b.toFixed(2);
     return this.placeDistance;
-  }
-
-  hei(){
-    this.apiService.httpPlaceMarker().subscribe((res: any) => {
-      let lon: any;
-      let lat: any;
-      for (const c of res.data) {
-        lon = c.location.lon;
-        lat = c.location.lat;
-        let distance = this.distance(this.referenceLocation.y, this.referenceLocation.x, lat, lon);
-        c.distance = distance;
-      }});
-
-      console.log(this.places);
   }
 
   makeMapPopup(data: any): any{
@@ -148,9 +137,14 @@ export class MainComponent implements AfterViewInit, OnInit {
         const marker = L.marker([lat, lon]);
 
         marker.bindPopup(this.makeMapPopup(c));
+        // console.log("2 " + c.id + " " + this.placeDistance);
+        // c.distance = this.placeDistance;
+        // // this.placeDistance = c.distance;
+        // console.log("1 " + c.id + " " + c.distance);
 
         marker.addTo(map);
       }
+      
     });
   }
 
