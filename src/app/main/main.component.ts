@@ -114,7 +114,6 @@ export class MainComponent implements AfterViewInit, OnInit {
     var b = 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     this.placeDistance = b.toFixed(2);
     return this.placeDistance;
-
   }
 
 
@@ -174,8 +173,4 @@ export class MainComponent implements AfterViewInit, OnInit {
       this.places.push(res);
     });
   }
-}
-
-function distance(y: any, x: any, arg2: any, arg3: any) {
-  throw new Error('Function not implemented.');
 }
