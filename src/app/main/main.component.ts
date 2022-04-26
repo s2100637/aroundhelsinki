@@ -4,7 +4,7 @@ import { ApiService } from '../services/api.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Places } from '../interfaces/places';
 import { Events } from '../interfaces/events';
-import { AllDTO, PlaceDTO, EventDTO } from '../interfaces/dtos';
+import { AllDTO, PlaceDTO, EventDTO, ActivityDTO } from '../interfaces/dtos';
 import { faLocationCrosshairs, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { MapComponent } from '../map/map.component';
 import 'leaflet.markercluster';
@@ -21,6 +21,7 @@ export class MainComponent implements OnInit {
   alldto: AllDTO[] = [];
   placedto: PlaceDTO[] = [];
   eventdto: EventDTO[] = [];
+  activitydto: ActivityDTO[] = [];
  
   closeResult: string = '';
   faLocationCrosshairs = faLocationCrosshairs;
@@ -83,38 +84,32 @@ export class MainComponent implements OnInit {
     this.apiService.getExternalAllEvents().subscribe((res: Events ) => {
       this.events.push(res);
     });
+    this.teset();
   }
 
-  addPlacesToPlaceDTO(){
-
-  }
-
-  getAllFromEventDTO(){
-    console.log("eventdto: " + this.eventdto);
-  }
-
-
-  addPlacesToEventDTO(){
-    this.getExternalAllEvents();
-    for(const eventdto of this.eventdto){
-     for(const event of this.events[0].data){
-      this.eventdto[0].id = event.id;
-      this.eventdto[0].name = event.name;
-      this.eventdto[0].address.street_address = event.location.address.street_address;
-      this.eventdto[0].address.postal_code = event.location.address.postal_code;
-      // this.eventdto[0].address.locality = res.data[0].location.address.locality;
-      this.eventdto[0].lat = event.location.lat;
-      this.eventdto[0].lon = event.location.lon;
-      this.eventdto[0].distance = event.distance
-     }
+  teset(){
+    for(const res of this.places){
+      this.getExternalAllEvents2(res.data[0].id, res.data[0].name, res.data[0].location.address.street_address, res.data[0].location.address.postal_code, res.data[0].location.address.locality, res.data[0].location.lat, res.data[0].location.lon, res.data[0].distance);
     }
   }
-  
+
+  getExternalAllEvents2(id: any, name: any, street_address: any, postal_code:any, locality: any, lat: any, lon: any, distance: any): void {
+    for(const dto of this.eventdto){
+      dto.id = id;
+      dto.name = name;
+      dto.address.street_address = street_address;
+      dto.address.postal_code = postal_code;
+      dto.address.locality = locality;
+      dto.latlon.lat = lat;
+      dto.latlon.lon = lon;
+      dto.distance = distance;
+    }  
+  }
+    
   ngOnInit(): void {
     this.getExternalAll();
-    this.addPlacesToEventDTO();
-    // this.getAllFromEventDTO();
-    // this.getAllFromEventDTO();
-    // this.getExternalAllEvents();
-  }
+    // this.addPlacesToEventDTO();
+    this.getExternalAllEvents();
+
+    }
 }

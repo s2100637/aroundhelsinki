@@ -1,24 +1,24 @@
-export interface Events {
+export interface Activities {
     meta: Meta;
     data: Datum[];
     tags: { [key: string]: string };
 }
 
 export interface Datum {
-    id:          string;
-    name:        NameClass;
-    source_type: EType;
-    info_url:    null | string;
-    modified_at: Date;
-    location:    Location;
-    description: Description;
-    tags:        Tag[];
-    event_dates: EventDates;
+    id:                  string;
+    name:                NameClass;
+    source_type:         EType;
+    info_url:            string;
+    modified_at:         Date;
+    location:            Location;
+    description:         Description;
+    tags:                Tag[];
+    where_when_duration: WhereWhenDuration;
     distance: number;
 }
 
 export interface Description {
-    intro:  null | string;
+    intro:  null;
     body:   string;
     images: Image[];
 }
@@ -37,13 +37,7 @@ export interface EType {
 
 export enum NameEnum {
     AllRightsReserved = "All rights reserved.",
-    LinkedEvents = "LinkedEvents",
-}
-
-export interface EventDates {
-    starting_day:           Date | null;
-    ending_day:             Date | null;
-    additional_description: null;
+    MyHelsinki = "MyHelsinki",
 }
 
 export interface Location {
@@ -55,27 +49,32 @@ export interface Location {
 export interface Address {
     street_address: null | string;
     postal_code:    null | string;
-    locality:       Locality | null;
+    locality:       Locality;
     neighbourhood:  null;
 }
 
 export enum Locality {
     Espoo = "Espoo",
     Helsinki = "Helsinki",
-    Kauniainen = "Kauniainen",
+    Tampere = "Tampere",
     Vantaa = "Vantaa",
 }
 
 export interface NameClass {
     fi: string;
-    en: null | string;
+    en: string;
     sv: null | string;
-    zh: null | string;
+    zh: null;
 }
 
 export interface Tag {
     id:   string;
     name: string;
+}
+
+export interface WhereWhenDuration {
+    where_and_when: null | string;
+    duration:       null | string;
 }
 
 export interface Meta {
@@ -85,12 +84,12 @@ export interface Meta {
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toEvents(json: string): Events {
-        return cast(JSON.parse(json), r("Events"));
+    public static toActivities(json: string): Activities {
+        return cast(JSON.parse(json), r("Activities"));
     }
 
-    public static eventsToJson(value: Events): string {
-        return JSON.stringify(uncast(value, r("Events")), null, 2);
+    public static activitiesToJson(value: Activities): string {
+        return JSON.stringify(uncast(value, r("Activities")), null, 2);
     }
 }
 
@@ -227,7 +226,7 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Events": o([
+    "Activities": o([
         { json: "meta", js: "meta", typ: r("Meta") },
         { json: "data", js: "data", typ: a(r("Datum")) },
         { json: "tags", js: "tags", typ: m("") },
@@ -236,15 +235,15 @@ const typeMap: any = {
         { json: "id", js: "id", typ: "" },
         { json: "name", js: "name", typ: r("NameClass") },
         { json: "source_type", js: "source_type", typ: r("EType") },
-        { json: "info_url", js: "info_url", typ: u(null, "") },
+        { json: "info_url", js: "info_url", typ: "" },
         { json: "modified_at", js: "modified_at", typ: Date },
         { json: "location", js: "location", typ: r("Location") },
         { json: "description", js: "description", typ: r("Description") },
         { json: "tags", js: "tags", typ: a(r("Tag")) },
-        { json: "event_dates", js: "event_dates", typ: r("EventDates") },
+        { json: "where_when_duration", js: "where_when_duration", typ: r("WhereWhenDuration") },
     ], false),
     "Description": o([
-        { json: "intro", js: "intro", typ: u(null, "") },
+        { json: "intro", js: "intro", typ: null },
         { json: "body", js: "body", typ: "" },
         { json: "images", js: "images", typ: a(r("Image")) },
     ], false),
@@ -258,11 +257,6 @@ const typeMap: any = {
         { json: "id", js: "id", typ: 0 },
         { json: "name", js: "name", typ: r("NameEnum") },
     ], false),
-    "EventDates": o([
-        { json: "starting_day", js: "starting_day", typ: u(Date, null) },
-        { json: "ending_day", js: "ending_day", typ: u(Date, null) },
-        { json: "additional_description", js: "additional_description", typ: null },
-    ], false),
     "Location": o([
         { json: "lat", js: "lat", typ: 3.14 },
         { json: "lon", js: "lon", typ: 3.14 },
@@ -271,30 +265,34 @@ const typeMap: any = {
     "Address": o([
         { json: "street_address", js: "street_address", typ: u(null, "") },
         { json: "postal_code", js: "postal_code", typ: u(null, "") },
-        { json: "locality", js: "locality", typ: u(r("Locality"), null) },
+        { json: "locality", js: "locality", typ: r("Locality") },
         { json: "neighbourhood", js: "neighbourhood", typ: null },
     ], false),
     "NameClass": o([
         { json: "fi", js: "fi", typ: "" },
-        { json: "en", js: "en", typ: u(null, "") },
+        { json: "en", js: "en", typ: "" },
         { json: "sv", js: "sv", typ: u(null, "") },
-        { json: "zh", js: "zh", typ: u(null, "") },
+        { json: "zh", js: "zh", typ: null },
     ], false),
     "Tag": o([
         { json: "id", js: "id", typ: "" },
         { json: "name", js: "name", typ: "" },
+    ], false),
+    "WhereWhenDuration": o([
+        { json: "where_and_when", js: "where_and_when", typ: u(null, "") },
+        { json: "duration", js: "duration", typ: u(null, "") },
     ], false),
     "Meta": o([
         { json: "count", js: "count", typ: "" },
     ], false),
     "NameEnum": [
         "All rights reserved.",
-        "LinkedEvents",
+        "MyHelsinki",
     ],
     "Locality": [
         "Espoo",
         "Helsinki",
-        "Kauniainen",
+        "Tampere",
         "Vantaa",
     ],
 };

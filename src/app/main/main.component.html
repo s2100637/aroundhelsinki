@@ -26,9 +26,7 @@
           <label class="form-check-label" for="inlineCheckbox3">Events</label>
         </div>
       </div>
-  
-        <div *ngFor="let data of events[0]?.data">
-          
+        <div *ngFor="let data of eventdto">
             <div class="list-group-item list-group-item-action">
               
               <div class="d-flex w-100 justify-content-between">
@@ -36,17 +34,17 @@
                 <h5 class="mb-1 fs-6">
                   <fa-icon [icon]="faCalendarCheck"></fa-icon
                   ><a style="text-decoration: none; color: #680f3d !important">
-                    {{ data.name.fi }}</a
+                    {{ data.name }}</a
                   >
                 </h5>
                 <small id="distance" *ngIf="showDistance">{{
-                  calculateDistance(data.location).toFixed(2)
+                  calculateDistance(data.latlon).toFixed(2)
                 }}km</small>
               </div>
               <p class="mb-1 ptext">
-                {{ data.location.address.street_address }},
-                {{ data.location.address.postal_code }}
-                {{ data.location.address.locality }}
+                {{ data.address.street_address }},
+                {{ data.address.postal_code }}
+                {{ data.address.locality }}
               </p>
               <small>
                 <a routerLink="detail/{{ data.id }}" href="#" class="link">{{
