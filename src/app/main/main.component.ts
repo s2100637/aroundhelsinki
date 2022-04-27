@@ -76,3 +76,5 @@ export class MainComponent implements OnInit {
     this.getExternalAll();
   }
 }
+
+
